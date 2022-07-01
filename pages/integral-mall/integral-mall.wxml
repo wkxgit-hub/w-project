@@ -1,0 +1,63 @@
+<view class="container">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+            积分商城
+        </view>
+    </view>
+</view>
+<view class="jf_wrap">
+    <image class="jf-bg" src="../../images/jf-bg.png"></image>
+    <view class="num">
+        <view class="num_top">{{userCoins}}</view>
+        <view class="num_tit">我的积分</view>
+    </view>
+    <view bindtap="goRecord" class="exchange">兑换记录</view>
+</view>
+<view style="height: {{statusBarHeight+168+25}}px;"></view>
+<view class="jf_gift_wrap" wx:if="{{list.length>0}}">
+    <view class="flex" wx:for="{{list}}" wx:key="{{index}}">
+        <view class="flex_wrap">
+            <view class="img">
+                <image mode="aspectFit" src="{{item.image}}"></image>
+            </view>
+            <view class="tit">{{item.name}}</view>
+            <view class="num">{{item.coins}}积分</view>
+            <view bindtap="goExchage" class="btn" data-coins="{{item.coins}}" id="{{item.id}}">
+                <button>立即兑换</button>
+            </view>
+        </view>
+    </view>
+</view>
+<view class="goouc_data" style="margin-top:42px;" wx:if="{{list.length<=0}}">
+    <view class="img">
+        <image src="../../images/no-record-pic.png"></image>
+    </view>
+    <view class="title">暂无礼品</view>
+</view>
+<van-dialog useSlot bind:close="onClose" bind:confirm="confirm" closeOnClickOverlay="true" confirmButtonText="确定" show="{{show}}" zIndex="9999">
+    <view class="bindCon">
+        <view class="title">收货地址</view>
+        <view class="phone">
+            <input bindinput="getName" maxlength="10" placeholder="请输入收货人姓名" type="text"></input>
+        </view>
+        <view class="phone">
+            <input bindinput="getPhone" maxlength="11" placeholder="请输入联系方式" type="number"></input>
+        </view>
+        <view class="phone">
+            <textarea bindinput="getAddress" class="textarea" placeholder="请输入收货地址" placeholderStyle="font-size:28rpx;"></textarea>
+        </view>
+    </view>
+</van-dialog>
+<van-dialog useSlot bind:close="onClosewx" bind:confirm="confirmwx" closeOnClickOverlay="true" confirmButtonText="一键复制微信号" show="{{wxshow}}" zIndex="9999">
+    <view class="bindCon">
+        <view class="title">联系商家</view>
+        <view class="info">
+            <view class="titinfo">联系商家发货</view>
+            <view class="titinfo">商家微信：{{wechat_number}}</view>
+        </view>
+    </view>
+</van-dialog>

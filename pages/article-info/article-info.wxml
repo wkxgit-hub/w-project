@@ -1,0 +1,32 @@
+<import src="../../wxParse/wxParse.wxml"></import>
+<bolck wx:if="{{isloading}}">
+    <view class="loading">
+        <image src="../../images/loading.gif"></image>
+    </view>
+</bolck>
+<block wx:if="{{!isloading}}">
+    <view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+        <view class="header">
+            <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+            <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+                <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                    <image src="../../images/back-pic.png"></image>
+                </view>
+                <view class="title_word">{{title}}</view>
+            </view>
+        </view>
+    </view>
+    <view class="title_item">
+        <view class="content_title">{{articleInfo.title}}</view>
+        <view class="time_readnum">
+            <view>{{articleInfo.readnum}}次浏览</view>
+            <view class="content_time">{{articleInfo.createtime}}</view>
+        </view>
+    </view>
+    <view class="content">
+        <view style="text-indent:56rpx;">
+            <template is="wxParse" data="{{wxParseData:article.nodes}}"></template>
+        </view>
+        <video poster="{{videoInfo.img}}" src="{{videoInfo.url}}" wx:if="{{isShowVideo}}"></video>
+    </view>
+</block>

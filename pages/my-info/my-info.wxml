@@ -1,0 +1,60 @@
+<view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+      个人信息
+    </view>
+    </view>
+</view>
+<view class="infoHeader">
+    <view class="header">
+        <view class="lt">头像</view>
+        <image bindtap="editHeadimgBtn" class="rt" src="{{userinfo.headimg}}"></image>
+    </view>
+    <view class="news_info noline">
+        <view class="lt">姓名</view>
+        <input bindblur="inputblur" bindinput="getName" class="rt" maxlength="10" placeholder="请输入姓名" type="text" value="{{userinfo.name=='null'?'':userinfo.name}}"></input>
+    </view>
+</view>
+<view class="infoHeader">
+    <view class="news_info">
+        <view class="lt">手机号码</view>
+        <view style="float: right;">
+            <view style="float: left;line-height: 44px;color: #7c8a9a;margin-right: 10px;" wx:if="{{userinfo.phone}}">{{userinfo.phone=='null'?'请输入手机号':userinfo.phone}}</view>
+            <view bindtap="goBind" class="bind">
+                <text wx:if="{{userinfo.phone!='null'&&userinfo.phone!=null&&userinfo.phone!=''}}">重新绑定</text>
+                <text wx:else>立即绑定</text>
+            </view>
+        </view>
+    </view>
+    <view class="news_info" wx:if="{{isSetShow&&userinfo.sex!=''}}">
+        <view class="lt">性别</view>
+        <input disabled bindinput="getXh" class="rt" maxlength="20" placeholder="请输入性别" type="text" value="{{userinfo.sex=='1'?'男':'女'}}"></input>
+    </view>
+    <view class="news_info" wx:if="{{isSetShow}}">
+        <view class="lt">学号</view>
+        <input disabled bindinput="getXh" class="rt" maxlength="20" placeholder="请输入学号" type="text" value="{{userinfo.student_name}}"></input>
+    </view>
+    <view class="news_info" wx:if="{{false}}">
+        <view class="lt">身份证号</view>
+        <input bindinput="getIdcard" class="rt" placeholder="请输入身份证号" type="idcard" value="{{userinfo.id_card}}"></input>
+    </view>
+</view>
+<view class="submit" style="margin-top: 36px;">
+    <button bindtap="goToSave" class="btn">保存</button>
+</view>
+<van-dialog useSlot bind:close="onClose" bind:confirm="confirm" closeOnClickOverlay="true" confirmButtonText="确定" show="{{show}}" zIndex="9999">
+    <view class="bindCon">
+        <view class="title">绑定手机号</view>
+        <view class="phone">
+            <input bindinput="getPhone" maxlength="11" placeholder="请输入手机号" type="number" value="{{userinfo.phone=='null'?'':userinfo.phone}}"></input>
+        </view>
+        <view class="code">
+            <!-- <input bindinput="getCode" placeholder="请输入验证码" type="number"></input> -->
+            <view bindtap="sendCode" class="getcode">{{codetxt}}</view>
+        </view>
+    </view>
+</van-dialog>

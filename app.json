@@ -1,0 +1,76 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/mine/mine",
+    "pages/webView/webView",
+    "pages/special-lx/special-lx",
+    "pages/type-lx/type-lx",
+    "pages/result/result",
+    "pages/exam-desc/exam-desc",
+    "pages/exam/exam",
+    "pages/practice/practice",
+    "pages/integral-mall/integral-mall",
+    "pages/login/login",
+    "pages/my-medal/my-medal",
+    "pages/article-info/article-info",
+    "pages/article-video-info/article-video-info",
+    "pages/exchage-record/exchage-record",
+    "pages/my-info/my-info",
+    "pages/feedback/feedback",
+    "pages/ranking/ranking",
+    "pages/knowledgePoints/knowledgePoints",
+    "pages/knowledgePoints-list/knowledgePoints-list",
+    "pages/knowledgePoints-list-detail/knowledgePoints-list-detail",
+    "pages/error/error",
+    "pages/article/article"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f8f8f8",
+    "enablePullDownRefresh": false,
+    "onReachBottomDistance": 50,
+    "pageOrientation": "portrait",
+    "navigationStyle": "custom"
+  },
+  "tabBar": {
+    "color": "#B2B8D2",
+    "selectedColor": "#4E9BF5",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "text": "首页",
+        "pagePath": "pages/home/home",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home1.png"
+      },
+      {
+        "text": "文章",
+        "pagePath": "pages/article/article",
+        "iconPath": "images/article.png",
+        "selectedIconPath": "images/article1.png"
+      },
+      {
+        "text": "我的错题",
+        "pagePath": "pages/error/error",
+        "iconPath": "images/error.png",
+        "selectedIconPath": "images/error1.png"
+      },
+      {
+        "text": "排行榜",
+        "pagePath": "pages/ranking/ranking",
+        "iconPath": "images/ranking.png",
+        "selectedIconPath": "images/ranking1.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/mine/mine",
+        "iconPath": "images/mine.png",
+        "selectedIconPath": "images/mine1.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

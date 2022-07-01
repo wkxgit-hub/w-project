@@ -1,0 +1,630 @@
+<import src="../../wxParse/wxParse.wxml"></import>
+<view class="main" bindtouchstart='touchStart' bindtouchend="touchEnd">
+<view class="container" style="padding-top: {{statusBarHeight+titleBarHeight}}px;">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+            练习
+        </view>
+    </view>
+</view>
+<bolck wx:if="{{isloading}}">
+    <view class="loading">
+        <image src="../../images/loading.gif"></image>
+    </view>
+</bolck>
+<block wx:if="{{!isloading}}">
+    <block wx:if="{{paperdetail.length>0}}">
+        <view class="practice_wrap" style="top:{{statusBarHeight+titleBarHeight}}px">
+            <view class="practice">
+                <view bindtap="goType" class="{{type==1?'active':''}}" data-type="1">答题模式</view>
+                <view bindtap="goType" class="{{type==2?'active':''}}" data-type="2">背题模式</view>
+            </view>
+        </view>
+        <view class="paper_wrap" wx:if="{{type==1}}">
+            <view class="content">
+                <view class="title">
+                    <view class="title_type">
+                        <text wx:if="{{paperdetail[index].type==1}}">单选题</text>
+                        <text wx:if="{{paperdetail[index].type==2}}">多选题</text>
+                        <text wx:if="{{paperdetail[index].type==3}}">判断题</text>
+                        <text wx:if="{{paperdetail[index].type==4}}">填空题</text>
+                        <text wx:if="{{paperdetail[index].type==5}}">语音题</text>
+                    </view>
+                    <view bindtap="{{isaudio==1?'myAudioStart':'myAudioPause'}}" class="horn" data-num="{{index}}" data-src="{{paperdetail[index].qaudio}}" data-type="paper" wx:if="{{paperdetail[index].qaudio}}">
+                        <image class="img_horn" src="../../images/horn-pic.png"></image>
+                        <text wx:if="{{isaudio==1}}">点击播放</text>
+                        <text wx:if="{{isaudio==2}}">正在播放</text>
+                    </view>
+                    <text class="num_list">{{current_page*100+index+1}}、</text>
+                    <text>{{paperdetail[index].question}}</text>
+                    <block wx:if="{{paperdetail[index].video.url}}">
+                        <video data-id="{{paperdetail[index].id}}" id="index{{paperdetail[index].id}}" objectFit="fill" poster="{{paperdetail[index].video.img}}" src="{{paperdetail[index].video.url}}" style="width: 100%;height: 150px;" wx:if="{{playIndex==paperdetail[index].id}}"></video>
+                        <view bindtap="bindplay" class="videoPractice" id="{{paperdetail[index].id}}" style="display: {{playIndex==paperdetail[index].id?'none':'block'}};">
+                            <view class="poster">
+                                <image class="poster_img" mode="aspectFill" src="{{paperdetail[index].video.img}}"></image>
+                                <image class="poster_play" src="../../images/play-pic.png"></image>
+                            </view>
+                        </view>
+                    </block>
+                    <block wx:if="{{paperdetail[index].qimage}}">
+                        <image bindtap="previewImg" class="img" data-index="{{index}}" mode="aspectFill" src="{{item}}" wx:for="{{paperdetail[index].qimage}}" wx:key="{{item}}"></image>
+                    </block>
+                </view>
+                <block wx:if="{{paperdetail[index].type==1}}">
+                    <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                        <block wx:if="{{!answerlist[index].choose}}">
+                            <view bindtap="choice" class="option_item" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                <view class="option_item_num">{{oItem.o}}.</view>
+                                    {{oItem.p}}
+                                </view>
+                        </block>
+                        <block wx:if="{{answerlist[index].choose}}">
+                            <block wx:if="{{answerlist[index].choose==paperdetail[index].rightkey}}">
+                                <block wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item right" wx:if="{{answerlist[index].choose==paperdetail[index].rightkey&&answerlist[index].choose==oItem.o}}">
+                                        <view class="option_item_num ">{{oItem.o}}.</view>
+                                            {{oItem.p}}
+                                        </view>
+                                    <view class="option_item" wx:else>
+                                        <view class="option_item_num ">{{oItem.o}}.</view>
+                                            {{oItem.p}}
+                                        </view>
+                                </block>
+                            </block>
+                            <block wx:if="{{answerlist[index].choose!=paperdetail[index].rightkey}}">
+                                <block wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item right" wx:if="{{oItem.o==paperdetail[index].rightkey}}">
+                                        <view class="option_item_num ">{{oItem.o}}.</view>
+                                            {{oItem.p}}
+                                        </view>
+                                    <view class="option_item error" wx:elif="{{answerlist[index].choose==oItem.o}}">
+                                        <view class="option_item_num ">{{oItem.o}}.</view>
+                                            {{oItem.p}}
+                                        </view>
+                                    <view class="option_item" wx:else>
+                                        <view class="option_item_num ">{{oItem.o}}.</view>
+                                            {{oItem.p}}
+                                        </view>
+                                </block>
+                            </block>
+                        </block>
+                    </view>
+                    <view class="option_img" wx:if="{{paperdetail[index].a_type==1}}">
+                        <block wx:if="{{!answerlist[index].choose}}">
+                            <view bindtap="choice" class="option_item_flex" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                <view class="option_item">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                    <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                </view>
+                            </view>
+                        </block>
+                        <block wx:if="{{answerlist[index].choose}}">
+                            <block wx:if="{{answerlist[index].choose==paperdetail[index].rightkey}}">
+                                <block wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item_flex" wx:if="{{answerlist[index].choose==paperdetail[index].rightkey&&answerlist[index].choose==oItem.o}}">
+                                        <view class="option_item right">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                            <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                        </view>
+                                    </view>
+                                    <view class="option_item_flex" wx:else>
+                                        <view class="option_item">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                            <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                        </view>
+                                    </view>
+                                </block>
+                            </block>
+                            <block wx:if="{{answerlist[index].choose!=paperdetail[index].rightkey}}">
+                                <block wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item_flex" wx:if="{{oItem.o==paperdetail[index].rightkey}}">
+                                        <view class="option_item right">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                            <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                        </view>
+                                    </view>
+                                    <view class="option_item_flex" wx:elif="{{answerlist[index].choose==oItem.o}}">
+                                        <view class="option_item error">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                            <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                        </view>
+                                    </view>
+                                    <view class="option_item_flex" wx:else>
+                                        <view class="option_item">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                            <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                        </view>
+                                    </view>
+                                </block>
+                            </block>
+                        </block>
+                    </view>
+                </block>
+                <block wx:if="{{paperdetail[index].type==2}}">
+                    <block wx:if="{{!answerlist[index].issure}}">
+                        <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                            <view bindtap="multipleChoice" class="option_item {{answerlist[index].choose[oIndex].ischoose?'right':''}}" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                <view class="option_item_num">{{oItem.o}}.</view>
+                                    {{oItem.p}}
+                                </view>
+                        </view>
+                        <view class="option_img" wx:if="{{paperdetail[index].a_type==1}}">
+                            <view bindtap="multipleChoice" class="option_item_flex" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                <view class="option_item {{answerlist[index].choose[oIndex].ischoose?'right':''}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                    <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                </view>
+                            </view>
+                        </view>
+                        <view class="sure">
+                            <view bindtap="gomultipleChoice" class="btn" data-fjtit="{{index}}" data-item="{{paperdetail[index]}}">确定</view>
+                        </view>
+                    </block>
+                    <block wx:if="{{answerlist[index].issure}}">
+                        <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                            <block wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                <view class="option_item right" wx:if="{{answerlist[index].choose[oIndex].ischooseright==1}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                        {{oItem.p}}
+                                    </view>
+                                <view class="option_item error" wx:if="{{answerlist[index].choose[oIndex].ischooseright==2}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                        {{oItem.p}}
+                                    </view>
+                                <view class="option_item error" wx:if="{{answerlist[index].choose[oIndex].ischooseright==3}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                        {{oItem.p}}
+                                    </view>
+                                <view class="option_item" wx:if="{{answerlist[index].choose[oIndex].ischooseright==4}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                        {{oItem.p}}
+                                    </view>
+                            </block>
+                        </view>
+                        <view class="option_img" wx:if="{{paperdetail[index].a_type==1}}">
+                            <block wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                <view class="option_item_flex" wx:if="{{answerlist[index].choose[oIndex].ischooseright==1}}">
+                                    <view class="option_item right">
+                                        <view class="option_item_num">{{oItem.o}}.</view>
+                                        <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                    </view>
+                                </view>
+                                <view class="option_item_flex" wx:if="{{answerlist[index].choose[oIndex].ischooseright==2}}">
+                                    <view class="option_item error">
+                                        <view class="option_item_num">{{oItem.o}}.</view>
+                                        <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                    </view>
+                                </view>
+                                <view class="option_item_flex" wx:if="{{answerlist[index].choose[oIndex].ischooseright==3}}">
+                                    <view class="option_item error">
+                                        <view class="option_item_num">{{oItem.o}}.</view>
+                                        <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                    </view>
+                                </view>
+                                <view class="option_item_flex" wx:if="{{answerlist[index].choose[oIndex].ischooseright==4}}">
+                                    <view class="option_item">
+                                        <view class="option_item_num">{{oItem.o}}.</view>
+                                        <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                    </view>
+                                </view>
+                            </block>
+                        </view>
+                    </block>
+                </block>
+                <block wx:if="{{paperdetail[index].type==3}}">
+                    <view class="option" wx:if="{{!answerlist[index].choose}}">
+                        <view bindtap="choice" class="option_item" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="A">
+                            <view class="option_item_num">A.</view>
+                                    正确
+                                </view>
+                        <view bindtap="choice" class="option_item" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="B">
+                            <view class="option_item_num">B.</view>
+                                    错误
+                                </view>
+                    </view>
+                    <block wx:if="{{answerlist[index].choose}}">
+                        <block wx:if="{{paperdetail[index].rightkey=='A'}}">
+                            <view class="option" wx:if="{{answerlist[index].choose=='A'}}">
+                                <view class="option_item right">
+                                    <view class="option_item_num">A.</view>
+                                            正确
+                                        </view>
+                                <view class="option_item">
+                                    <view class="option_item_num">B.</view>
+                                            错误
+                                        </view>
+                            </view>
+                            <view class="option" wx:if="{{answerlist[index].choose=='B'}}">
+                                <view class="option_item right">
+                                    <view class="option_item_num">A.</view>
+                                            正确
+                                        </view>
+                                <view class="option_item error">
+                                    <view class="option_item_num">B.</view>
+                                            错误
+                                        </view>
+                            </view>
+                        </block>
+                        <block wx:if="{{paperdetail[index].rightkey=='B'}}">
+                            <view class="option" wx:if="{{answerlist[index].choose=='A'}}">
+                                <view class="option_item error">
+                                    <view class="option_item_num">A.</view>
+                                            正确
+                                        </view>
+                                <view class="option_item right">
+                                    <view class="option_item_num">B.</view>
+                                            错误
+                                        </view>
+                            </view>
+                            <view class="option" wx:if="{{answerlist[index].choose=='B'}}">
+                                <view class="option_item">
+                                    <view class="option_item_num">A.</view>
+                                            正确
+                                        </view>
+                                <view class="option_item right">
+                                    <view class="option_item_num">B.</view>
+                                            错误
+                                        </view>
+                            </view>
+                        </block>
+                    </block>
+                </block>
+                <block wx:if="{{paperdetail[index].type==4}}">
+                    <view class="option" wx:if="{{!answerlist[index].iswrite}}">
+                        <view class="option_item {{answerlist[index].choose[oIndex]?'right':''}}" wx:for="{{paperdetail[index].rightarray}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item_num fill">{{oIndex+1}}.</view>
+                            <input adjustPosition="{{false}}" bindinput="textInput" class="ipt" data-fjnum="{{index}}" data-inputnum="{{oIndex}}" data-item="{{answerlist[index]}}" placeholder="请输入答案" type="text" value="{{answerlist[index].choose[oIndex]}}"></input>
+                        </view>
+                        <view class="sure">
+                            <view bindtap="goSure" class="btn" data-fjnum="{{index}}" data-item="{{paperdetail[index]}}">确定</view>
+                        </view>
+                    </view>
+                    <view class="option" wx:if="{{answerlist[index].iswrite}}">
+                        <view class="option_item {{answerlist[index].choose[oIndex]==paperdetail[index].rightarray[oIndex]?'right':'error'}}" wx:for="{{paperdetail[index].rightarray}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item_num fill">{{oIndex+1}}.</view>
+                            <input class="ipt" disabled="true" placeholder="请输入答案" type="text" value="{{answerlist[index].choose[oIndex]}}"></input>
+                        </view>
+                    </view>
+                </block>
+                <block wx:if="{{paperdetail[index].type==5}}">
+                    <block wx:for="{{paperdetail[index].list}}" wx:for-index="vIndex" wx:for-item="vItem" wx:key="{{vIndex}}">
+                        <block wx:if="{{paperdetail[index].list[vIndex].a_type==0}}">
+                            <view class="voiceQuestion">{{vIndex+1}}.{{vItem.question}}</view>
+                            <view class="option" wx:if="{{!answerlist[index].choose[vIndex].choose}}">
+                                <view bindtap="vioceChoice" class="option_item" data-fjnum="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" data-zjnum="{{vIndex}}" wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                            {{oItem.p}}
+                                        </view>
+                            </view>
+                            <block wx:if="{{answerlist[index].choose[vIndex].choose}}">
+                                <view class="option" wx:if="{{answerlist[index].choose[vIndex].choose==paperdetail[index].list[vIndex].rightkey}}">
+                                    <block wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                        <view class="option_item right" wx:if="{{answerlist[index].choose[vIndex].choose==oItem.o}}">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                                    {{oItem.p}}
+                                                </view>
+                                        <view class="option_item" wx:else>
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                                    {{oItem.p}}
+                                                </view>
+                                    </block>
+                                </view>
+                                <view class="option" wx:if="{{answerlist[index].choose[vIndex].choose!=paperdetail[index].list[vIndex].rightkey}}">
+                                    <block wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                        <view class="option_item error" wx:if="{{answerlist[index].choose[vIndex].choose==oItem.o}}">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                                    {{oItem.p}}
+                                                </view>
+                                        <view class="option_item right" wx:elif="{{paperdetail[index].list[vIndex].rightkey==oItem.o}}">
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                                    {{oItem.p}}
+                                                </view>
+                                        <view class="option_item" wx:else>
+                                            <view class="option_item_num">{{oItem.o}}.</view>
+                                                    {{oItem.p}}
+                                                </view>
+                                    </block>
+                                </view>
+                            </block>
+                        </block>
+                        <block wx:if="{{paperdetail[index].list[vIndex].a_type==1}}">
+                            <view class="voiceQuestion">{{vIndex+1}}.{{vItem.question}}</view>
+                            <view class="option_img" wx:if="{{!answerlist[index].choose[vIndex].choose}}">
+                                <view bindtap="vioceChoice" class="option_item_flex" data-fjnum="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" data-zjnum="{{vIndex}}" wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item {{answerlist[index].choose[vIndex]==oItem.o?'right':''}}">
+                                        <view class="option_item_num">{{oItem.o}}.</view>
+                                        <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                    </view>
+                                </view>
+                            </view>
+                            <block wx:if="{{answerlist[index].choose[vIndex].choose}}">
+                                <view class="option_img" wx:if="{{answerlist[index].choose[vIndex].choose==paperdetail[index].list[vIndex].rightkey}}">
+                                    <block wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                        <view class="option_item_flex" wx:if="{{answerlist[index].choose[vIndex].choose==oItem.o}}">
+                                            <view class="option_item right">
+                                                <view class="option_item_num">{{oItem.o}}.</view>
+                                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                            </view>
+                                        </view>
+                                        <view class="option_item_flex" wx:else>
+                                            <view class="option_item">
+                                                <view class="option_item_num">{{oItem.o}}.</view>
+                                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                            </view>
+                                        </view>
+                                    </block>
+                                </view>
+                                <view class="option_img" wx:if="{{answerlist[index].choose[vIndex].choose!=paperdetail[index].list[vIndex].rightkey}}">
+                                    <block wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                        <view class="option_item_flex" wx:if="{{answerlist[index].choose[vIndex].choose==oItem.o}}">
+                                            <view class="option_item error">
+                                                <view class="option_item_num">{{oItem.o}}.</view>
+                                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                            </view>
+                                        </view>
+                                        <view class="option_item_flex" wx:elif="{{paperdetail[index].list[vIndex].rightkey==oItem.o}}">
+                                            <view class="option_item right">
+                                                <view class="option_item_num">{{oItem.o}}.</view>
+                                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                            </view>
+                                        </view>
+                                        <view class="option_item_flex" wx:else>
+                                            <view class="option_item">
+                                                <view class="option_item_num">{{oItem.o}}.</view>
+                                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                            </view>
+                                        </view>
+                                    </block>
+                                </view>
+                            </block>
+                        </block>
+                    </block>
+                </block>
+            </view>
+        </view>
+        <view class="paper_wrap" wx:if="{{type==2}}">
+            <view class="content">
+                <view class="title">
+                    <view class="title_type">
+                        <text wx:if="{{paperdetail[index].type==1}}">单选题</text>
+                        <text wx:if="{{paperdetail[index].type==2}}">多选题</text>
+                        <text wx:if="{{paperdetail[index].type==3}}">判断题</text>
+                        <text wx:if="{{paperdetail[index].type==4}}">填空题</text>
+                        <text wx:if="{{paperdetail[index].type==5}}">语音题</text>
+                    </view>
+                    <view bindtap="{{isaudio==1?'myAudioStart':'myAudioPause'}}" class="horn" data-num="{{index}}" data-src="{{paperdetail[index].qaudio}}" wx:if="{{paperdetail[index].qaudio}}">
+                        <image class="img_horn" src="../../images/horn-pic.png"></image>
+                        <text wx:if="{{isaudio==1}}">点击播放</text>
+                        <text wx:if="{{isaudio==2}}">正在播放</text>
+                    </view>
+                    <text>{{paperdetail[index].question}}</text>
+                    <block wx:if="{{paperdetail[index].video.url}}">
+                        <video data-id="{{paperdetail[index].id}}" id="index{{paperdetail[index].id}}" objectFit="fill" poster="{{paperdetail[index].video.img}}" src="{{paperdetail[index].video.url}}" style="width: 100%;height: 150px;" wx:if="{{playIndex==paperdetail[index].id}}"></video>
+                        <view bindtap="bindplay" class="videoPractice" id="{{paperdetail[index].id}}" style="display: {{playIndex==paperdetail[index].id?'none':'block'}};">
+                            <view class="poster">
+                                <image class="poster_img" mode="aspectFill" src="{{paperdetail[index].video.img}}"></image>
+                                <image class="poster_play" src="../../images/play-pic.png"></image>
+                            </view>
+                        </view>
+                    </block>
+                    <block wx:if="{{paperdetail[index].qimage}}">
+                        <image bindtap="previewImg" class="img" data-index="{{index}}" mode="aspectFill" src="{{item}}" wx:for="{{paperdetail[index].qimage}}" wx:key="{{item}}"></image>
+                    </block>
+                </view>
+                <block wx:if="{{paperdetail[index].type==1}}">
+                    <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                        <view class="option_item {{paperdetail[index].rightkey==oItem.o?'right':''}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item_num">{{oItem.o}}.</view>
+                                {{oItem.p}}
+                            </view>
+                    </view>
+                    <view class="option_img" wx:if="{{paperdetail[index].a_type==1}}">
+                        <view class="option_item_flex" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item {{paperdetail[index].rightkey==oItem.o?'right':''}}">
+                                <view class="option_item_num">{{oItem.o}}.</view>
+                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+                <block wx:if="{{paperdetail[index].type==2}}">
+                    <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                        <view class="option_item {{paperdetail[index].option[oIndex].right?'right':''}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item_num">{{oItem.o}}.</view>
+                                {{oItem.p}}
+                            </view>
+                    </view>
+                    <view class="option_img" wx:if="{{paperdetail[index].a_type==1}}">
+                        <view class="option_item_flex" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item {{paperdetail[index].option[oIndex].right?'right':''}}">
+                                <view class="option_item_num">{{oItem.o}}.</view>
+                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+                <view class="option" wx:if="{{paperdetail[index].type==3}}">
+                    <view class="option_item {{paperdetail[index].rightkey=='A'?'right':''}}">
+                        <view class="option_item_num">A.</view>
+                                正确
+                            </view>
+                    <view class="option_item {{paperdetail[index].rightkey=='B'?'right':''}}">
+                        <view class="option_item_num">B.</view>
+                                错误
+                            </view>
+                </view>
+                <view class="option" wx:if="{{paperdetail[index].type==4}}">
+                    <view class="option_item right" wx:for="{{paperdetail[index].rightarray}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                        <view class="option_item_num fill">{{oIndex+1}}.</view>
+                        <input class="ipt" disabled="true" placeholder="请输入答案" type="text" value="{{paperdetail[index].rightarray[oIndex]}}"></input>
+                    </view>
+                </view>
+                <block wx:if="{{paperdetail[index].type==5}}">
+                    <block wx:for="{{paperdetail[index].list}}" wx:for-index="vIndex" wx:for-item="vItem" wx:key="{{vIndex}}">
+                        <block wx:if="{{paperdetail[index].list[vIndex].a_type==0}}">
+                            <view class="voiceQuestion">{{vIndex+1}}.{{vItem.question}}</view>
+                            <view class="option">
+                                <view class="option_item {{paperdetail[index].list[vIndex].rightkey==oItem.o?'right':''}}" wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                                        {{oItem.p}}
+                                    </view>
+                            </view>
+                        </block>
+                        <block wx:if="{{paperdetail[index].list[vIndex].a_type==1}}">
+                            <view class="voiceQuestion">{{vIndex+1}}.{{vItem.question}}</view>
+                            <view class="option_img">
+                                <view class="option_item_flex" wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item {{paperdetail[index].list[vIndex].rightkey==oItem.o?'right':''}}">
+                                        <view class="option_item_num">{{oItem.o}}.</view>
+                                        <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                    </view>
+                                </view>
+                            </view>
+                        </block>
+                    </block>
+                </block>
+            </view>
+        </view>
+        <view>
+            <view style="height: 5px;background: #f2f1f6;"></view>
+            <block wx:if="{{type==1}}">
+                <view class="analysis {{ad_have==1?'':'analysisAD'}}" wx:if="{{answerlist[index].isanalysis}}">
+                    <view bindtap="goCorrection" class="correction" id="{{paperdetail[index].id}}">纠错</view>
+                    <view>
+                        <view class="img">
+                            <image src="../../images/title-left-pic.png"></image>试题解析
+                        </view>
+                        <view class="rightAnswer">正确答案：{{paperdetail[index].rightkey}}</view>
+                        <view class="right_analysis">
+                            <view class="right_analysis_title">
+                                <view>解析：</view>
+                                <view class="jeixi_title">
+                                    <view bindtap="{{isAnalysisAudioPlay==1?'myAudioStart':'myAudioPause'}}" class="horn" data-num="{{index}}" data-src="{{paperdetail[index].analysis_audio}}" data-type="analysis" wx:if="{{paperdetail[index].analysis_audio}}">
+                                        <image class="img_horn" src="../../images/horn-pic.png"></image>
+                                        <text wx:if="{{isAnalysisAudioPlay==1}}">点击播放</text>
+                                        <text wx:if="{{isAnalysisAudioPlay==2}}">正在播放</text>
+                                    </view>
+                                </view>
+                            </view>
+                            <view style="text-indent:56rpx;">
+                                <template is="wxParse" data="{{wxParseData:article.nodes}}"></template>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="jiexi" wx:if="{{paperdetail[index].aimage}}">
+                        <image bindtap="previewImgJx" class="jiexi_img" data-index="{{index}}" mode="widthFix" src="{{item}}" wx:for="{{paperdetail[index].aimage}}" wx:key="{{index}}"></image>
+                    </view>
+                    <ad unitId="{{adInfo.secondId}}" wx:if="{{ad_have==1}}"></ad>
+                </view>
+            </block>
+            <block wx:if="{{type==2}}">
+                <view class="analysis {{ad_have==1?'':'analysisAD'}}" wx:if="{{answerlist[index].isanalysis}}">
+                    <view bindtap="goCorrection" class="correction" id="{{paperdetail[index].id}}">纠错</view>
+                    <view>
+                        <view class="img">
+                            <image src="../../images/title-left-pic.png"></image>试题解析
+                        </view>
+                        <view class="rightAnswer">正确答案：{{paperdetail[index].rightkey}}</view>
+                        <view class="right_analysis">
+                            <view class="right_analysis_title">
+                                <view>解析：</view>
+                                <view class="jeixi_title">
+                                    <view bindtap="{{isAnalysisAudioPlay==1?'myAudioStart':'myAudioPause'}}" class="horn" data-num="{{index}}" data-src="{{paperdetail[index].analysis_audio}}" data-type="analysis" wx:if="{{paperdetail[index].analysis_audio}}">
+                                        <image class="img_horn" src="../../images/horn-pic.png"></image>
+                                        <text wx:if="{{isAnalysisAudioPlay==1}}">点击播放</text>
+                                        <text wx:if="{{isAnalysisAudioPlay==2}}">正在播放</text>
+                                    </view>
+                                </view>
+
+                            </view>
+                            <view style="text-indent:56rpx;">
+                                <template is="wxParse" data="{{wxParseData:article.nodes}}"></template>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="jiexi" wx:if="{{paperdetail[index].aimage}}">
+                        <image bindtap="previewImgJx" class="jiexi_img" data-index="{{index}}" mode="widthFix" src="{{item}}" wx:for="{{paperdetail[index].aimage}}" wx:key="{{index}}"></image>
+                    </view>
+                    <ad unitId="{{adInfo.secondId}}" wx:if="{{ad_have==1}}"></ad>
+                </view>
+            </block>
+        </view>
+        <view style="height: 70px;"></view>
+        <view class="goouc_exam_tab">
+            <view bindtap="goUp" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/left-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">上一题</view>
+            </view>
+            <view bindtap="lookAnaiysis" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/analysis-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">解析</view>
+            </view>
+            <view bindtap="showTk" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/option-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">{{current_page*100+index+1}} / {{data_total}}</view>
+            </view>
+            <view bindtap="addWrong" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/error-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">
+                    <text wx:if="{{paperdetail[index].wrong_have==2}}">加入收藏</text>
+                    <text wx:if="{{paperdetail[index].wrong_have==1}}">已加入收藏</text>
+                </view>
+            </view>
+            <view bindtap="goDown" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/right-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">下一题</view>
+            </view>
+
+            <!-- <view bindtap="goShenq" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/analysis-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">申请题库</view>
+            </view> -->
+
+
+        </view>
+        <van-popup bind:close="onClose" overlayStyle="background:rgba(0,0,0,.4)" position="bottom" show="{{show}}">
+            <view class="ddf_titnum_con">
+                <view class="ddf_title">
+                    <view class="goouc_title_flex">
+                        <view class="left">
+                            <image src="../../images/title-left-pic.png"></image>
+                            题卡
+                            <text>{{current_page*100+index+1}} / {{data_total}}</text>
+                        </view>
+                    </view>
+                </view>
+                <scroll-view scrollY bindscrolltolower="scrolltolower" lowerThreshold="200" style="height: 350px;">
+                    <view class="ddf_circle_wrap">
+                        <view bindtap="jumptap" class="ddf_circle_box" data-i="{{index}}" wx:for="{{num}}" wx:key="{{index}}">
+                            <view class="ddf_circle {{answerlist[index].isjudge==1?'right':''}} {{answerlist[index].isjudge==2?'error':''}}">{{current_page*100+index+1}}</view>
+                        </view>
+                    </view>
+                </scroll-view>
+            </view>
+        </van-popup>
+    </block>
+
+    <view class="goouc_data" style="margin-top:20px;" wx:if="{{paperdetail.length<=0}}">
+        <view class="img">
+            <image src="../../images/no-article-pic.png"></image>
+        </view>
+        <view class="title">暂无数据</view>
+    </view>
+</block>
+</view>

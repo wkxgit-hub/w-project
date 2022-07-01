@@ -1,0 +1,84 @@
+<view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+            我的勋章
+        </view>
+    </view>
+</view>
+<view class="medal_header">
+    <image class="medal-bg" src="../../images/medal-bg.png"></image>
+    <view class="header_wrap">
+        <view class="header_bg">
+            <image class="img" src="{{userinfo.headimg}}"></image>
+        </view>
+        <view class="name">{{userinfo.nickname}}</view>
+        <view class="medal_num">累计获得勋章：{{num}}个</view>
+    </view>
+</view>
+<bolck wx:if="{{!isloading}}">
+    <view class="mdeal_wall">
+        <view class="flex">
+            <view class="img">
+                <image mode="aspectFit" src="../../images/medal-1-2.png" wx:if="{{info[1].have==1}}"></image>
+                <image mode="aspectFit" src="../../images/medal-1-1.png" wx:if="{{info[1].have==2}}"></image>
+            </view>
+            <view class="title">
+                <view>首次考试及格</view>
+            </view>
+        </view>
+        <view class="flex">
+            <view class="img">
+                <image mode="aspectFit" src="../../images/medal-2-2.png" wx:if="{{info[2].have==1}}"></image>
+                <image mode="aspectFit" src="../../images/medal-2-1.png" wx:if="{{info[2].have==2}}"></image>
+            </view>
+            <view class="title">
+                <view>首次获得满分</view>
+            </view>
+        </view>
+        <view class="flex">
+            <view class="img">
+                <image mode="aspectFit" src="../../images/medal-3-2.png" wx:if="{{info[3].have==1}}"></image>
+                <image mode="aspectFit" src="../../images/medal-3-1.png" wx:if="{{info[3].have==2}}"></image>
+            </view>
+            <view class="title">
+                <view>累计三次获得满分</view>
+            </view>
+        </view>
+        <view class="flex">
+            <view class="img">
+                <image mode="aspectFit" src="../../images/medal-4-2.png" wx:if="{{info[4].have==1}}"></image>
+                <image mode="aspectFit" src="../../images/medal-4-1.png" wx:if="{{info[4].have==2}}"></image>
+            </view>
+            <view class="title">
+                <view>习题进度100%</view>
+            </view>
+        </view>
+        <view class="flex">
+            <view class="img">
+                <image mode="aspectFit" src="../../images/medal-5-2.png" wx:if="{{info[5].have==1}}"></image>
+                <image mode="aspectFit" src="../../images/medal-5-1.png" wx:if="{{info[5].have==2}}"></image>
+            </view>
+            <view class="title">
+                <view>累计10次获得满分</view>
+            </view>
+        </view>
+        <view class="flex">
+            <view class="img">
+                <image mode="aspectFit" src="../../images/medal-6-2.png" wx:if="{{info[6].have==1}}"></image>
+                <image mode="aspectFit" src="../../images/medal-6-1.png" wx:if="{{info[6].have==2}}"></image>
+            </view>
+            <view class="title">
+                <view>累计30次获得满分</view>
+            </view>
+        </view>
+    </view>
+</bolck>
+<bolck wx:if="{{isloading}}">
+    <view class="loading">
+        <image src="../../images/loading.gif"></image>
+    </view>
+</bolck>

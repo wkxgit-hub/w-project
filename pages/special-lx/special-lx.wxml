@@ -1,0 +1,59 @@
+<view class="container" style="padding-top: {{statusBarHeight+titleBarHeight}}px;">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+            {{title}}
+        </view>
+    </view>
+</view>
+<view wx:if="{{!isloading}}">
+    <view class="special-wrap" style="height:{{windowHeight-statusBarHeight-titleBarHeight}}px" wx:if="{{specialList.length>0}}">
+        <view class="special-lt">
+            <view bindtap="ltChoose" class="lt-item {{index==specialIndex?'active':''}}" data-i="{{index}}" wx:for="{{specialList}}" wx:key="{{index}}">
+                <view class="shu"></view>
+          {{item.name}}
+        </view>
+        </view>
+        <scroll-view scrollY style="height:100%">
+            <view class="special-rt" wx:for="{{specialList[specialIndex].son}}" wx:key="{{index}}">
+                <view class="rt-item rt-item-title"  bindtap="rtChoose" data-item="{{item}}" id="{{item.id}}" wx:key="{{index}}">
+                        <view class="heng one"></view>
+                        <view class="tit">{{item.name}}</view>
+                        <view class="heng two"></view>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+	<view class="goouc_data" style="margin-top:20px;" wx:else>
+	    <view class="img">
+	        <image src="../../images/no-article-pic.png"></image>
+	    </view>
+	    <view class="title">暂无数据</view>
+	</view>
+</view>
+<bolck wx:if="{{isloading}}">
+    <view class="loading">
+        <image src="../../images/loading.gif"></image>
+    </view>
+</bolck>
+<view class="pay-wrap" wx:if="{{show}}">
+    <view class="mask"></view>
+    <view class="pay-con-wrap">
+        <view class="pay-con">
+            <view bindtap="getCode" class="btn active">
+                激活码
+            </view>
+            <van-dialog showCancelButton useSlot bind:close="onClose" bind:confirm="onConfirm" confirmButtonOpenType="getUserInfo" show="{{activationShow}}" title="激活码">
+                <van-field bind:change="onChange" border="{{false}}" label="激活码" placeholder="请输入激活码" value="{{setCDKey}}"></van-field>
+            </van-dialog>
+            <view bindtap="cancel" class="btn">取消</view>
+        </view>
+    </view>
+</view>
+
+
+
+

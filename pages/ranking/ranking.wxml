@@ -1,0 +1,140 @@
+<view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            成绩排行
+        </view>
+    </view>
+</view>
+<view class="ranking_top">
+    <image class="ranking_bg" src="../../images/ranking-bg.png"></image>
+    <view class="ranking_option_wrap" style="top:{{statusBarHeight+titleBarHeight+16}}px">
+        <view class="ranking_option">
+            <view bindtap="goSwitch" class="{{type==1?'active':''}}" data-type="1">我的成绩</view>
+            <view bindtap="goSwitch" class="{{type==2?'active':''}}" data-type="2">排行榜</view>
+        </view>
+    </view>
+</view>
+<view class="ranking_con_lt" style="position: fixed;top: {{statusBarHeight+titleBarHeight+80}}px;z-index: 999;" wx:if="{{type==1}}">
+    <view class="grage">
+        <view class="num">{{myexam_info.myscore}}</view>
+        <view class="tit">我的成绩</view>
+    </view>
+    <view style="height: 30px;"></view>
+    <scroll-view scrollY style="height: {{scroll_height-152}}rpx;">
+        <view class="statistics">
+            <view class="statistics_option">
+                <view class="num">{{myexam_info.pass_num}}</view>
+                <view class="tit">及格次数</view>
+            </view>
+            <view class="statistics_option">
+                <view class="lt"></view>
+                <view class="num">{{myexam_info.doexam_num}}</view>
+                <view class="tit">累计考试次数</view>
+                <view class="rt"></view>
+            </view>
+            <view class="statistics_option">
+                <view class="num">{{myexam_info.calculate}}</view>
+                <view class="tit">分数预测</view>
+            </view>
+            <view class="statistics_option">
+                <view class="num">{{myexam_info.dotest_num}}</view>
+                <view class="tit">做题数量</view>
+            </view>
+            <view class="statistics_option">
+                <view class="lt"></view>
+                <view class="num">{{myexam_info.right_lv}}%</view>
+                <view class="tit">正确率</view>
+                <view class="rt"></view>
+            </view>
+            <view class="statistics_option">
+                <view class="num">{{myexam_info.not_donum}}</view>
+                <view class="tit">未做数量</view>
+            </view>
+        </view>
+        <view style="height: 15px;"></view>
+        <view class="tongji_wrap">
+            <view class="dabiao">
+                <view class="lt">
+                    本周达标
+                    <text>{{info.continuity}}</text>天
+                </view>
+                <view bindtap="chakan" class="rt">
+                    <view class="circle success"></view>
+                    已达标
+                    <image class="img" src="../../images/wenhao.png"></image>
+                </view>
+            </view>
+            <view class="dabiao">
+                <view class="lt bottom">
+                    累计达标
+                    <text>{{info.leiji}}</text>天
+                </view>
+                <view class="rt">
+                    <view class="circle error"></view>
+                    未达标
+                </view>
+            </view>
+            <view class="tongji">
+                <view class="line">
+                    <image class="img" src="../../images/dottedLine.png"></image>
+                    <view class="qiu">
+                        <view class="circle {{item.standard==1?'success':''}} {{item.standard==2?'error':''}}" wx:for="{{tongji_chart}}" wx:key="{{index}}"></view>
+                    </view>
+                </view>
+                <view class="week">
+                    <view>Mon</view>
+                    <view>Tue</view>
+                    <view>Wed</view>
+                    <view>Thu</view>
+                    <view>Fri</view>
+                    <view>Sat</view>
+                    <view>Sun</view>
+                </view>
+            </view>
+        </view>
+        <view style="height: 80px;"></view>
+    </scroll-view>
+</view>
+<view class="ranking_con_rt" style="position: fixed;top: {{statusBarHeight+titleBarHeight+80}}px;z-index: 999;" wx:if="{{type==2}}">
+    <view class="rank_option">
+        <image class="jb" src="../../images/trophy-pic.png"></image>
+        <picker bindchange="bindPickerChange" range="{{rankingArr}}" value="{{rankingArrindex}}">
+            <view class="picker">
+                {{rankingArr[rankingArrindex]}}
+                <image src="../../images/bottom-arrow.png"></image>
+            </view>
+        </picker>
+    </view>
+    <view class="rank_list_wrap">
+        <view class="title">
+            <view class="paiming">排名</view>
+            <view class="paiming">昵称</view>
+            <view class="num">分数（分）</view>
+        </view>
+        <scroll-view scrollY style="height: {{scroll_height-186}}rpx;">
+            <view class="list_item" wx:for="{{list}}" wx:key="{{index}}">
+                <view class="pm" wx:if="{{index==0}}">
+                    <image src="../../images/first-pic.png"></image>
+                </view>
+                <view class="pm" wx:elif="{{index==1}}">
+                    <image src="../../images/two-pic.png"></image>
+                </view>
+                <view class="pm" wx:elif="{{index==2}}">
+                    <image src="../../images/three-pic.png"></image>
+                </view>
+                <view class="pm" wx:else>{{index+1}}</view>
+                <image class="header" src="{{item.headimg}}"></image>
+                <view class="name">{{item.nickname}}</view>
+                <view class="num">{{item.franction}}</view>
+            </view>
+            <view class="goouc_data" style="margin-top: 42px;" wx:if="{{list.length<=0}}">
+                <view class="img">
+                    <image src="../../images/no-trophy-pic.png"></image>
+                </view>
+                <view class="title">暂无排名</view>
+            </view>
+            <view style="height: 80px;"></view>
+        </scroll-view>
+    </view>
+</view>

@@ -1,0 +1,10 @@
+{
+    "component": true,
+    "usingComponents": {
+        "van-icon": "../icon/index",
+        "van-info": "../info/index",
+        "van-dialog": "/components/vant/miniprogram_npm/vant-weapp/dialog/index",
+        "van-field": "/components/vant/miniprogram_npm/vant-weapp/field/index",
+        "van-popup": "/components/vant/miniprogram_npm/vant-weapp/popup/index"
+    }
+}

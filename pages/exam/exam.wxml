@@ -1,0 +1,210 @@
+<view class="main" bindtouchstart='touchStart' bindtouchend="touchEnd">
+<view class="container" style="padding-top: {{statusBarHeight+titleBarHeight}}px;">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+      {{title}}
+    </view>
+    </view>
+</view>
+<bolck wx:if="{{isloading}}">
+    <view class="loading">
+        <image src="../../images/loading.gif"></image>
+    </view>
+</bolck>
+<view wx:if="{{!isloading}}">
+    <block wx:if="{{paperdetail.length>0}}">
+        <view class="exam_title" style="top:{{statusBarHeight+titleBarHeight}}px">
+            <view class="lt">
+                <text>{{index+1}}</text>/{{paperdetail.length}}</view>
+            <view class="rt">剩余时间：{{durationtime}}</view>
+        </view>
+        <view class="paper_wrap">
+            <view class="content">
+                <view class="title">
+                    <view class="title_type">
+                        <text wx:if="{{paperdetail[index].type==1}}">单选题</text>
+                        <text wx:if="{{paperdetail[index].type==2}}">多选题</text>
+                        <text wx:if="{{paperdetail[index].type==3}}">判断题</text>
+                        <text wx:if="{{paperdetail[index].type==4}}">填空题</text>
+                        <text wx:if="{{paperdetail[index].type==5}}">语音题</text>
+                    </view>
+                    <view bindtap="{{isaudio==1?'myAudioStart':'myAudioPause'}}" class="horn" data-num="{{index}}" data-src="{{paperdetail[index].qaudio}}" wx:if="{{paperdetail[index].qaudio}}">
+                        <image class="img_horn" src="../../images/horn-pic.png"></image>
+                        <text wx:if="{{isaudio==1}}">点击播放</text>
+                        <text wx:if="{{isaudio==2}}">正在播放</text>
+                    </view>
+                    <text>{{paperdetail[index].question}}</text>
+                    <block wx:if="{{paperdetail[index].video.url}}">
+                        <video data-id="{{paperdetail[index].id}}" id="index{{paperdetail[index].id}}" objectFit="fill" poster="{{paperdetail[index].video.img}}" src="{{paperdetail[index].video.url}}" style="width: 100%;height: 150px;" wx:if="{{playIndex==paperdetail[index].id}}"></video>
+                        <view bindtap="bindplay" class="videoPractice" id="{{paperdetail[index].id}}" style="display: {{playIndex==paperdetail[index].id?'none':'block'}};">
+                            <view class="poster">
+                                <image class="poster_img" mode="aspectFill" src="{{paperdetail[index].video.img}}"></image>
+                                <image class="poster_play" src="../../images/play-pic.png"></image>
+                            </view>
+                        </view>
+                    </block>
+                    <block wx:if="{{paperdetail[index].qimage}}">
+                        <image class="img" mode="aspectFill" src="{{item}}" wx:for="{{paperdetail[index].qimage}}" wx:key="{{item}}"></image>
+                    </block>
+                </view>
+                <block wx:if="{{paperdetail[index].type==1}}">
+                    <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                        <view bindtap="choice" class="option_item {{answerlist[index].choose==oItem.o?'right':''}}" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item_num">{{oItem.o}}.</view>
+              {{oItem.p}}
+            </view>
+                    </view>
+                    <view class="option_img" wx:if="{{paperdetail[index].a_type==1}}">
+                        <view bindtap="choice" class="option_item_flex" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item {{answerlist[index].choose==oItem.o?'right':''}}">
+                                <view class="option_item_num">{{oItem.o}}.</view>
+                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+                <block wx:if="{{paperdetail[index].type==2}}">
+                    <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                        <view bindtap="multipleChoice" class="option_item {{answerlist[index].choose[oIndex].ischoose?'right':''}}" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item_num">{{oItem.o}}.</view>
+              {{oItem.p}}
+            </view>
+                    </view>
+                    <view class="option_img" wx:if="{{paperdetail[index].a_type==1}}">
+                        <view bindtap="multipleChoice" class="option_item_flex" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" wx:for="{{paperdetail[index].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                            <view class="option_item {{answerlist[index].choose[oIndex].ischoose?'right':''}}">
+                                <view class="option_item_num">{{oItem.o}}.</view>
+                                <image mode="aspectFit" src="{{oItem.p}}"></image>
+                            </view>
+                        </view>
+                    </view>
+                </block>
+                <block wx:if="{{paperdetail[index].type==3}}">
+                    <view class="option" wx:if="{{paperdetail[index].a_type==0}}">
+                        <view bindtap="choice" class="option_item {{answerlist[index].choose=='A'?'right':''}}" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="A">
+                            <view class="option_item_num">A.</view>
+              正确
+            </view>
+                        <view bindtap="choice" class="option_item {{answerlist[index].choose=='B'?'right':''}}" data-fjtit="{{index}}" data-item="{{answerlist[index]}}" data-option="B">
+                            <view class="option_item_num">B.</view>
+              错误
+            </view>
+                    </view>
+                </block>
+                <view class="option" wx:if="{{paperdetail[index].type==4}}">
+                    <view class="option_item {{answerlist[index].choose[oIndex]?'right':''}}" wx:for="{{paperdetail[index].rightarray}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                        <view class="option_item_num fill">{{oIndex+1}}.</view>
+                        <input adjustPosition="true" bindinput="textInput" class="ipt" data-fjnum="{{index}}" data-inputnum="{{oIndex}}" data-item="{{answerlist[index]}}" placeholder="请输入答案" type="text" value="{{answerlist[index].choose[oIndex]}}"></input>
+                    </view>
+                </view>
+                <block wx:if="{{paperdetail[index].type==5}}">
+                    <block wx:for="{{paperdetail[index].list}}" wx:for-index="vIndex" wx:for-item="vItem" wx:key="{{vIndex}}">
+                        <block wx:if="{{paperdetail[index].list[vIndex].a_type==0}}">
+                            <view class="voiceQuestion">{{vIndex+1}}.{{vItem.question}}</view>
+                            <view class="option">
+                                <view bindtap="vioceChoice" class="option_item {{answerlist[index].choose[vIndex].choose==oItem.o?'right':''}}" data-fjnum="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" data-zjnum="{{vIndex}}" wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item_num">{{oItem.o}}.</view>
+                  {{oItem.p}}
+                </view>
+                            </view>
+                        </block>
+                        <block wx:if="{{paperdetail[index].list[vIndex].a_type==1}}">
+                            <view class="voiceQuestion">{{vIndex+1}}.{{vItem.question}}</view>
+                            <view class="option_img">
+                                <view bindtap="vioceChoice" class="option_item_flex" data-fjnum="{{index}}" data-item="{{answerlist[index]}}" data-option="{{oItem.o}}" data-zjnum="{{vIndex}}" wx:for="{{paperdetail[index].list[vIndex].option}}" wx:for-index="oIndex" wx:for-item="oItem" wx:key="{{oIndex}}">
+                                    <view class="option_item {{answerlist[index].choose[vIndex].choose==oItem.o?'right':''}}">
+                                        <view class="option_item_num">{{oItem.o}}.</view>
+                                        <image mode="aspectFit" src="{{oItem.p}}"></image>
+                                    </view>
+                                </view>
+                            </view>
+                        </block>
+                    </block>
+                </block>
+            </view>
+        </view>
+        <view style="height: 70px;"></view>
+        <view class="goouc_exam_tab">
+            <view bindtap="goUp" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/left-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">上一题</view>
+            </view>
+            <view bindtap="goHandpaper" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/handpaper-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">交卷</view>
+            </view>
+            <view bindtap="showTk" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/option-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">题卡</view>
+            </view>
+            <view bindtap="goDown" class="goouc_exam_tab_flex">
+                <view class="goouc_exam_tab_img">
+                    <image mode="aspectFit" src="../../images/right-pic.png"></image>
+                </view>
+                <view class="goouc_exam_tab_tit">下一题</view>
+            </view>
+        </view>
+        <van-popup bind:close="onClose" overlayStyle="background:rgba(0,0,0,.4)" position="bottom" show="{{show}}">
+            <view class="ddf_titnum_con">
+                <view class="ddf_title">
+                    <view class="goouc_title_flex">
+                        <view class="left">
+                            <image src="../../images/title-left-pic.png"></image>
+              题卡
+              <text>{{index+1}}/{{paperdetail.length}}</text>
+                        </view>
+                    </view>
+                </view>
+                <scroll-view scrollY bindscrolltolower="scrolltolower" lowerThreshold="200" style="height: 350px;">
+                    <view class="ddf_circle_wrap">
+                        <view bindtap="jumptap" class="ddf_circle_box" data-i="{{index}}" wx:for="{{num}}" wx:key="{{index}}">
+                            <view class="ddf_circle {{answerlist[index].choose?'right':''}}" wx:if="{{answerlist[index].type==1||answerlist[index].type==3}}">{{index+1}}</view>
+                            <view class="ddf_circle {{answerlist[index].issure?'right':''}}" wx:if="{{answerlist[index].type==4}}">{{index+1}}</view>
+                            <view class="ddf_circle {{answerlist[index].flag?'right':''}}" wx:if="{{answerlist[index].type==2}}">{{index+1}}</view>
+                            <view class="ddf_circle {{answerlist[index].iscomplete?'right':''}}" wx:if="{{answerlist[index].type==5}}">{{index+1}}</view>
+                        </view>
+                    </view>
+                </scroll-view>
+            </view>
+        </van-popup>
+        <van-popup bind:close="honClose" show="{{handpapershow}}">
+            <view class="bindCon">
+                <view class="title">交卷</view>
+                <view class="img">
+                    <image mode="widthFix" src="../../images/done-handpaper.png"></image>
+                </view>
+                <view class="goouc_dati">
+                    <view class="goouc_datinum">
+                        <view class="goouc_num">{{answerlength}}</view>
+                        <view class="goouc_tit">已做</view>
+                    </view>
+                    <view class="goouc_datinum">
+                        <view class="goouc_num">{{paperdetail.length-answerlength}}</view>
+                        <view class="goouc_tit">未做</view>
+                    </view>
+                </view>
+                <view class="goouc_btn">
+                    <button bindtap="Handpaper" class="goouc_btn_lt">现在交卷</button>
+                    <button bindtap="goDati" class="goouc_btn_rt">继续答题</button>
+                </view>
+            </view>
+        </van-popup>
+    </block>
+    <view class="goouc_data" style="margin-top:20px;" wx:else>
+        <view class="img">
+            <image src="../../images/no-article-pic.png"></image>
+        </view>
+        <view class="title">暂无数据</view>
+    </view>
+</view>
+</view>

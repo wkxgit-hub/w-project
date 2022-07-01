@@ -1,0 +1,45 @@
+<view class="container" style="padding-top: {{statusBarHeight+titleBarHeight}}px;">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+            {{title}}
+        </view>
+    </view>
+</view>
+<bolck wx:if="{{isloading}}">
+    <view class="loading">
+        <image src="../../images/loading.gif"></image>
+    </view>
+</bolck>
+<view wx:else>
+    <view wx:if="{{list.length>0}}">
+        <view class="type_wrap" wx:if="{{!isShowTest}}">
+            <view bindtap="goLx" class="type_list" id="{{item.id}}" wx:for="{{list}}" wx:key="{{index}}">
+                <view class="circle"></view>
+                <view class="con">{{item.name}}</view>
+                <image class="img" src="../../images/right-arrow.png"></image>
+            </view>
+        </view>
+        <view class="type_wrap card_list" wx:if="{{isShowTest}}">
+            <view bindtap="goLx" class="type_list" id="{{item.id}}" wx:for="{{list}}" wx:key="{{index}}">
+                <view class="left">
+                    <view class="con">{{item.name}}</view>
+                    <view class="zg">共计{{item.qnum}}道答题</view>
+                    <view class="zg">发布时间：{{item.createtime}}</view>
+                </view>
+                <view class="right">
+                    <button>答题</button>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="goouc_data" style="margin-top:20px;" wx:else>
+        <view class="img">
+            <image src="../../images/no-article-pic.png"></image>
+        </view>
+        <view class="title">暂无数据</view>
+    </view>
+</view>

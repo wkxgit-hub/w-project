@@ -1,0 +1,131 @@
+page {
+    background: #f2f1f6;
+    height: 100%;
+}
+
+.knowledge-wrap {
+    height: 100%;
+    position: relative;
+    padding-left: 202rpx;
+    box-sizing: border-box;
+}
+
+.knowledge-lt {
+    position: absolute;
+    width: 202rpx;
+    height: 100%;
+    background: #ffffff;
+    left: 0;
+    top: 0;
+    text-align: center;
+    padding-top: 32rpx;
+    box-sizing: border-box;
+    font-size: 28rpx;
+    color: #333333;
+}
+
+.lt-item {
+    height: 56rpx;
+    line-height: 56rpx;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 0 5px;
+    box-sizing: border-box;
+}
+
+.lt-item.active {
+    color: #4e9bf5;
+}
+
+.lt-item.active .shu {
+    display: block;
+}
+
+.lt-item .shu {
+    display: none;
+    width: 4rpx;
+    height: 22rpx;
+    background: #4e9bf5;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+}
+
+.knowledge-rt {
+    padding: 20rpx 20rpx 0;
+    box-sizing: border-box;
+}
+
+.rt-item {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 4px;
+    padding: 0 0 12rpx 0;
+}
+
+.rt-item-title {
+    height: 88rpx;
+    line-height: 88rpx;
+    font-size: 26rpx;
+    color: #333333;
+    text-align: center;
+}
+
+.rt-item-title .heng {
+    display: inline-block;
+    width: 57rpx;
+    height: 2rpx;
+    background: #999999;
+    vertical-align: middle;
+}
+
+.rt-item-title .heng.one {
+    margin-right: 18rpx;
+}
+
+.rt-item-title .heng.two {
+    margin-left: 18rpx;
+}
+
+.rt-item-title .tit {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 312rpx;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.rt-item-flex {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.rt-item-flex::after {
+    content: '';
+    flex: auto;
+}
+
+.flex-warp {
+    width: 33.3%;
+    height: 92rpx;
+    text-align: center;
+}
+
+.flex {
+    display: inline-block;
+    width: 120rpx;
+    height: 64rpx;
+    line-height: 64rpx;
+    font-size: 22rpx;
+    background: #f2f1f6;
+    border-radius: 4rpx;
+    vertical-align: top;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,65 @@
+<view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+			文章
+		</view>
+    </view>
+</view>
+<bolck wx:if="{{isloading}}">
+    <view class="loading">
+        <image src="../../images/loading.gif"></image>
+    </view>
+</bolck>
+<block wx:if="{{!isloading}}">
+    <view class="padding">
+        <view class="sx_wrap" style="top: {{statusBarHeight+titleBarHeight}}px;">
+            <view class="sx">
+                <picker bindchange="ltbindPickerChange" class="sx_picker" range="{{lt_list}}" rangeKey="name" value="{{lt_index}}">
+                    <view class="picker">
+						{{lt_list[lt_index].name}}
+					</view>
+                    <view class="img">
+                        <image src="../../images/bottom_arrow.png"></image>
+                    </view>
+                </picker>
+            </view>
+            <view class="sx">
+                <picker bindchange="rtbindPickerChange" class="sx_picker" range="{{rt_list}}" rangeKey="name" value="{{rt_index}}">
+                    <view class="picker">
+						{{rt_list[rt_index].name}}
+					</view>
+                    <view class="img">
+                        <image src="../../images/bottom_arrow.png"></image>
+                    </view>
+                </picker>
+            </view>
+        </view>
+        <view class="article" wx:for="{{list}}" wx:key="{{index}}">
+            <view bindtap="goArticle" class="article_con right_padding" data-id="{{item.id}}" data-title="{{item.title}}">
+                <image class="rting" mode="aspectFill" src="{{item.image}}"></image>
+                <view class="con" hover-class="num_time" hover-start-time="item.image" bindanimationend="article" bindanimationiteration="article">
+                    <view class="title cut_txt">
+						{{item.title}}
+					</view>
+                    <view class="num_time">
+                        <view class="lt">{{item.readnum}}人浏览</view>
+                        <view class="rt">{{item.time}}</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="my-loading-block" wx:if="{{isInit}}">
+        <image src="../../images/loadding.gif"></image>
+    </view>
+    <view class="none-list-remind" wx:if="{{page>=pages&&!isInit&&list.length>0}}">
+        <text>暂时没有更多了~</text>
+    </view>
+    <view class="goouc_data" wx:if="{{isdone}}">
+        <view class="img">
+            <image src="../../images/no-article-pic.png"></image>
+        </view>
+        <view class="title">暂无文章</view>
+    </view>
+</block>

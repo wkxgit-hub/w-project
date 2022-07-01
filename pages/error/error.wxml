@@ -1,0 +1,33 @@
+<view class="container">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+		我的错题
+    </view>
+    </view>
+</view>
+<view class="error_top">
+    <image class="bg_top" mode="widthFix" src="../../images/error-bg.png"></image>
+    <image class="error_clock" src="../../images/error-clock.png" style="top:{{(titleBarHeight+26)*2}}rpx"></image>
+    <view class="error_num" style="top:{{(titleBarHeight+75)*2}}rpx">{{total}}</view>
+    <view class="error_tit" style="top:{{(titleBarHeight+106)*2}}rpx">我的错题</view>
+    <view class="btn_wrap">
+        <button bindtap="goToday" class="lt btn">今日错题</button>
+        <button bindtap="goAll" class="rt btn">全部错题</button>
+    </view>
+</view>
+<view style="height: {{(statusBarHeight+titleBarHeight+271)*2}}rpx;"></view>
+<view class="error_bottom">
+    <view class="title">按题型练习</view>
+    <view bindtap="goType" class="con" data-id="{{item.id}}" id="{{item.id}}" wx:for="{{typelist}}" wx:key="{{index}}">
+        <view class="circle"></view>
+		{{item.name}}
+		<image src="../../images/right-arrow.png"></image>
+    </view>
+    <view class="goouc_data" style="margin-top:20px;" wx:if="{{typelist.length<=0}}">
+        <view class="img">
+            <image src="../../images/no-article-pic.png"></image>
+        </view>
+        <view class="title">暂无数据</view>
+    </view>
+</view>

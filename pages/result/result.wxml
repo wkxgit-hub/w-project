@@ -1,0 +1,74 @@
+<view class="container" style="padding-top: {{statusBarHeight+titleBarHeight}}px;">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+			考试成绩
+		</view>
+    </view>
+</view>
+<view class="result_bg">
+    <image src="../../images/result-bg.png"></image>
+</view>
+<view class="result_con">
+    <view class="result">
+        <view class="header">
+            <image class="header_img" src="{{userinfo.headimg}}"></image>
+        </view>
+        <view class="name">{{userinfo.nickname}}</view>
+        <view class="grage">
+            <view class="num">{{resuser.score}}<text>分</text>
+            </view>
+            <view class="title">考试成绩</view>
+        </view>
+        <view class="info_wrap">
+            <view class="info">
+                <view class="flex">
+                    <view class="top">{{resuser.time}}</view>
+                    <view class="bottom">考试用时</view>
+                </view>
+                <view class="flex">
+                    <view class="top">{{resuser.comment}}</view>
+                    <view class="bottom">考试结果</view>
+                </view>
+                <view class="flex">
+                    <view class="top">{{resuser.right_lv}}</view>
+                    <view class="bottom">正确率</view>
+                </view>
+                <view class="flex">
+                    <view class="top">{{resuser.ranking}}</view>
+                    <view class="bottom">考试排名</view>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
+<view wx:if="{{paperId!=''&&resuser.right_lv!='100%'}}">
+    <button bindtap="goSeeError" class="seeError">查看错题</button>
+</view>
+<van-popup bind:close="honClose" show="{{handpapershow}}">
+    <view class="bindCon">
+        <view class="title">恭喜你获得勋章</view>
+        <view class="img">
+            <image mode="widthFix" src="../../images/medal-1-2.png" wx:if="{{resuser.medal==1}}"></image>
+            <image mode="widthFix" src="../../images/medal-2-2.png" wx:if="{{resuser.medal==2}}"></image>
+            <image mode="widthFix" src="../../images/medal-3-2.png" wx:if="{{resuser.medal==3}}"></image>
+            <image mode="widthFix" src="../../images/medal-4-2.png" wx:if="{{resuser.medal==4}}"></image>
+            <image mode="widthFix" src="../../images/medal-5-2.png" wx:if="{{resuser.medal==5}}"></image>
+            <image mode="widthFix" src="../../images/medal-6-2.png" wx:if="{{resuser.medal==6}}"></image>
+        </view>
+        <view class="title_medal">
+            <view class="tit" wx:if="{{resuser.medal==1}}">首次考试及格</view>
+            <view class="tit" wx:if="{{resuser.medal==2}}">首次获得满分</view>
+            <view class="tit" wx:if="{{resuser.medal==3}}">累计三次获得满分</view>
+            <view class="tit" wx:if="{{resuser.medal==4}}">习题进度100%</view>
+            <view class="tit" wx:if="{{resuser.medal==5}}">累计十次获得满分</view>
+            <view class="tit" wx:if="{{resuser.medal==6}}">累计30次获得满分</view>
+        </view>
+        <view class="goouc_btn">
+            <button bindtap="goHandpaper" class="goouc_btn_lt">确定</button>
+        </view>
+    </view>
+</van-popup>

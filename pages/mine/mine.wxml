@@ -1,0 +1,89 @@
+<import src="../../wxParse/wxParse.wxml"></import>
+<view class="container">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight*2}}rpx"></view>
+        <view class="title-bar" style="height:{{titleBarHeight*2}}rpx;line-height: {{titleBarHeight*2}}rpx;">
+		我的
+    </view>
+    </view>
+</view>
+<view class="mine_header" style="top:{{statusBarHeight*2}}rpx">
+    <image class="mine_img" src="../../images/mine-bg.png"></image>
+    <view class="my_bl_block">
+        <view class="bl_block"></view>
+        <view class="bl_block bl_block_one"></view>
+    </view>
+    <view class="name_lv" style="top:{{(35+titleBarHeight)*2}}rpx">
+        <view class="name" wx:if="{{userinfo.headimg}}">{{userinfo.nickname}}</view>
+        <view bindtap="goLogin" class="name" wx:else>你还未登录哦！</view>
+    </view>
+    <view class="name_lv jf" style="top:{{(70+titleBarHeight)*2}}rpx">
+        <view class="name" wx:if="{{userinfo.headimg}}">我的积分：<text>{{userinfo.integral}}</text>
+        </view>
+        <view class="name" wx:else>我的积分：<text>0</text>
+        </view>
+    </view>
+    <view bindtap="goInfo" class="header_img" style="top:{{(32+titleBarHeight)*2}}rpx" wx:if="{{userinfo.headimg}}">
+        <image src="{{userinfo.headimg}}"></image>
+    </view>
+    <view bindtap="goLogin" class="header_img" style="top:{{(32+titleBarHeight)*2}}rpx;line-height: 140rpx;text-align: center;font-size: 16px;color: #333333;" wx:else>
+		登录
+	</view>
+</view>
+<view style="height: {{(185+statusBarHeight)*2}}rpx;"></view>
+<view bindtap="goMedal" class="mine_option_wrap">
+    <view class="mine_option">
+        <image class="lt_img" mode="widthFix" src="../../images/medal-pic.png"></image>
+		我的勋章
+		<image class="rt_img" mode="widthFix" src="../../images/right-arrow.png"></image>
+    </view>
+</view>
+<view bindtap="goIntegralmall" class="mine_option_wrap">
+    <view class="mine_option">
+        <image class="lt_img" mode="widthFix" src="../../images/shopping-pic.png"></image>
+		积分商城
+		<image class="rt_img" mode="widthFix" src="../../images/right-arrow.png"></image>                                                                                                                   
+    </view>
+</view>
+<view class="mine_option_wrap">
+    <view class="mine_option">
+        <image class="lt_img" mode="widthFix" src="../../images/share-pic.png"></image>
+		分享有礼
+		<button bindtap="btnShare" class="btnShare" openType="share">分享有礼</button>
+        <image class="rt_img" mode="widthFix" src="../../images/right-arrow.png"></image>
+    </view>
+</view>
+<!-- <view bindtap="goFeedback" class="mine_option_wrap">
+    <view class="mine_option">
+        <image class="lt_img" mode="widthFix" src="../../images/feedback-pic.png"></image>
+		用户反馈
+		<image class="rt_img" mode="widthFix" src="../../images/right-arrow.png"></image>
+    </view>
+</view> -->
+<view bindtap="goAbout" class="mine_option_wrap">
+    <view class="mine_option">
+        <image class="lt_img" mode="widthFix" src="../../images/about-pic.png"></image>
+		关于我们
+		<image class="rt_img" mode="widthFix" src="../../images/right-arrow.png"></image>
+    </view>
+</view>
+<view bindtap="goInfo" class="mine_option_wrap">
+    <view class="mine_option">
+        <image class="lt_img" mode="widthFix" src="../../images/setting-pic.png"></image>
+		个人设置
+		<image class="rt_img" mode="widthFix" src="../../images/right-arrow.png"></image>
+    </view>
+</view>
+<van-dialog useSlot bind:close="onClosewx" bind:confirm="confirmwx" closeOnClickOverlay="true" confirmButtonText="确定" show="{{wxshow}}" zIndex="9999">
+    <view class="bindCon">
+        <view class="title">关于我们</view>
+        <scroll-view scrollY style="height: 200px;">
+            <view class="info">
+                <view class="titinfo">
+                    <template is="wxParse" data="{{wxParseData:article.nodes}}"></template>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+</van-dialog>
+<text class="fa fa-picture-o fa-lg"></text>

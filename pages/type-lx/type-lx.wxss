@@ -1,0 +1,35 @@
+page {
+    background: #f2f1f6;
+}
+
+.card_list .type_list {
+    height: 200rpx;
+    line-height: 60rpx;
+    padding: 10rpx 40rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 8rpx;
+    box-shadow: 0 0 10rpx rgba(0,0,0,0.1);
+    margin-bottom: 14rpx;
+}
+
+.card_list .type_list .con {
+    color: #000;
+    font-size: 30rpx;
+}
+
+.card_list .type_list .zg {
+    color: #8e8e8e;
+    font-size: 26rpx;
+}
+
+.card_list .type_list .right button {
+    font-size: 26rpx;
+    color: #fff;
+    width: 120rpx;
+    height: 64rpx;
+    line-height: 64rpx;
+    border-radius: 32rpx;
+    background: linear-gradient(45deg,rgb(255,208,115),rgb(255,171,45));
+}

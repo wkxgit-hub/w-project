@@ -1,0 +1,198 @@
+<view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;background:#fff;color:#333;">
+      首页
+    </view>
+    </view>
+</view>
+<ad unitId="{{adInfo.homeId}}" wx:if="{{ad_have==1}}"></ad>
+<view class="tab-one-bg">
+    <swiper autoplay="true" circular="true" class="tab-one-bg-swiper" duration="500" indicatorDots="true" interval="3000" style="height:{{banner_height}}px">
+        <swiper-item bindtap="goBanner" data-item="{{item}}" wx:for="{{banner}}" wx:key="{{index}}">
+            <image mode="aspectFill" src="{{item.image}}" style="height:{{banner_height}}px"></image>
+        </swiper-item>
+    </swiper>
+</view>
+<view class="notice_wrap" wx:if="{{notice.length>0}}">
+    <view class="notice">
+        <view class="lt">
+            <text style="color:#f96668;">通</text>
+            <text>知</text>
+            <image src="../../images/horn.png"></image>
+        </view>
+        <swiper autoplay="true" circular="true" class="swiper-con" duration="500" interval="3000" vertical="true">
+            <swiper-item bindtap="goNotice" data-id="{{item.id}}" wx:for="{{notice}}" wx:key="{{index}}">
+                <view class="con">{{item.title}}</view>
+            </swiper-item>
+        </swiper>
+    </view>
+</view>
+<view class="day-rate-wrap">
+    <view style="height:10rpx;background:rgb(245,245,245);"></view>
+    <view class="day-rate">
+        <view class="flex">
+            <view class="top">坚持天数</view>
+            <view class="mid">{{count_day.count_day}}</view>
+            <view class="bot">排名{{count_day.count_day_rank}}名</view>
+        </view>
+        <view class="center"></view>
+        <view class="flex">
+            <view class="top">刷题正确率</view>
+            <view class="mid">{{rate.rate}}%</view>
+            <view class="bot">排名{{rate.rate_rank}}名</view>
+        </view>
+    </view>
+    <view style="height:10rpx;background:rgb(245,245,245);"></view>
+</view>
+<view class="option_wrap">
+    <view class="option">
+        <view class="option_lt">
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[2].title}}" data-type="{{icons[2].doid}}" wx:if="{{icons[2].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[2].icon}}" wx:if="{{icons[2].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/random-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[2].title}}</view>
+                    </button>
+                </form>
+            </view>
+
+
+
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[0].title}}" data-type="{{icons[0].doid}}" wx:if="{{icons[0].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[0].icon}}" wx:if="{{icons[0].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/special-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[0].title}}</view>
+                    </button>
+                </form>
+            </view>
+
+
+
+            
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[1].title}}" data-type="{{icons[1].doid}}" wx:if="{{icons[1].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[1].icon}}" wx:if="{{icons[1].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/questiontype-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[1].title}}</view>
+                    </button>
+                </form>
+            </view>
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[3].title}}" data-type="{{icons[3].doid}}" wx:if="{{icons[3].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[3].icon}}" wx:if="{{icons[3].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/conquered-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[3].title}}</view>
+                    </button>
+                </form>
+            </view>
+        </view>
+        <view class="option_con">
+            <!-- <view bindtap="goLx" class="option_practice">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit" style="color:#ffffff;">
+                        <view class="option_practice_bg_big">
+                            <view class="option_practice_bg">
+                                <view class="tit">顺序练习</view>
+                                <view class="num">{{total==0?'0':last_id+1>total?total:last_id+1}}/{{total}}</view>
+                            </view>
+                        </view>
+                    </button>
+                </form>
+            </view> -->
+            <view bindtap="goExam" class="option_practice ks">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit" style="color:#ffffff;">
+                        <view class="option_practice_bg_big ks">
+                            <view class="option_practice_bg ks">
+                模拟考试
+              </view>
+                        </view>
+                    </button>
+                </form>
+            </view>
+        </view>
+        <view class="option_rt">
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[5].title}}" data-type="{{icons[5].doid}}" wx:if="{{icons[5].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[5].icon}}" wx:if="{{icons[5].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/nodone-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[5].title}}</view>
+                    </button>
+                </form>
+            </view>
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[4].title}}" data-type="{{icons[4].doid}}" wx:if="{{icons[4].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[4].icon}}" wx:if="{{icons[4].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/myerror-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[4].title}}</view>
+                    </button>
+                </form>
+            </view>
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[6].title}}" data-type="{{icons[6].doid}}" wx:if="{{icons[6].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[6].icon}}" wx:if="{{icons[6].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/knowlge-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[6].title}}</view>
+                    </button>
+                </form>
+            </view>
+            <view bindtap="golianX" class="nav_child" data-title="{{icons[7].title}}" data-type="{{icons[7].doid}}" wx:if="{{icons[7].status==1}}">
+                <form bindsubmit="registerFormSubmit" reportSubmit="true">
+                    <button class="confirmbtn" formType="submit">
+                        <view class="nav_child_img">
+                            <image class="img_icon" mode="aspectFill" src="{{icons[7].icon}}" wx:if="{{icons[7].icon}}"></image>
+                            <image mode="aspectFill" src="../../images/difficultproblem-pic.png" wx:else></image>
+                        </view>
+                        <view class="nav_child_tit">{{icons[7].title}}</view>
+                    </button>
+                </form>
+            </view>
+        </view>
+    </view>
+</view>
+<view style="height: 10rpx;background:rgb(245,245,245);"></view>
+<view bindtap="getCode" class="jhm-wrap">
+    <view class="jhm">
+        <view class="lt">激活码通道</view>
+        <view class="rt">
+      快捷入口
+      <image src="../../images/right-arrow.png"></image>
+        </view>
+    </view>
+</view>
+<van-dialog showCancelButton useSlot bind:close="onClose" bind:confirm="onConfirm" confirmButtonOpenType="getUserInfo" show="{{activationShow}}" title="激活码">
+    <van-field bind:change="onChange" border="{{false}}" label="激活码" placeholder="请输入激活码" value="{{setCDKey}}"></van-field>
+</van-dialog>
+<view class="jhm-wrap">
+    <view class="jhm">
+        <view class="lt">{{countdown.countdown}}</view>
+        <view class="rt">
+      {{countdown.countdowntime}}
+      <image src="../../images/right-arrow.png"></image>
+        </view>
+    </view>
+</view>
+<view style="height: 40rpx;background:rgb(245,245,245);"></view>

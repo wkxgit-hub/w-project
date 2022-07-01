@@ -1,0 +1,76 @@
+page {
+    background: #f2f1f6;
+    z-index: -1;
+}
+
+ad {
+    margin-top: 20rpx;
+}
+
+.analysisAD {
+    padding-bottom: 60rpx;
+}
+
+.num_list {
+    margin: 0rpx 1rpx 0 26rpx;
+}
+
+.jiexi {
+    width: 90.5%;
+    padding-left: 36rpx;
+    padding-right: 36rpx;
+    margin-bottom: 40rpx;
+}
+
+.jiexi_img {
+    width: 100%;
+    margin: 10rpx 0;
+}
+
+.jiexi_audio {
+    padding: 24rpx 20rpx 24rpx 28rpx;
+    background-color: #eeeeee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.audio_img {
+    width: 16rpx;
+    height: 22rpx;
+}
+
+.progress_line {
+    width: 490rpx;
+    height: 2rpx;
+    background-color: #fff;
+}
+
+.time {
+    font-size: 20rpx;
+    color: #333333;
+}
+
+.right_analysis_title {
+    display: flex;
+    align-items: center;
+}
+
+.jeixi_title .horn {
+    width: 190rpx;
+    height: 40rpx;
+    line-height: 40rpx;
+    color: #4e9bf5;
+    font-size: 28rpx;
+    text-align: center;
+    display: inline-block;
+}
+
+.jeixi_title .horn .img_horn {
+    width: 36rpx;
+    height: 32rpx;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -6rpx;
+    margin-right: 12rpx;
+}

@@ -1,0 +1,35 @@
+<view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+      {{title}}
+    </view>
+    </view>
+</view>
+<view class="knowledge-wrap" style="height:{{windowHeight-statusBarHeight-titleBarHeight}}px">
+    <view class="knowledge-lt">
+        <view bindtap="ltChoose" class="lt-item {{index==knowledgeIndex?'active':''}}" data-i="{{index}}" wx:for="{{knowledgeList}}" wx:key="{{index}}">
+            <view class="shu"></view>
+      {{item.name}}
+    </view>
+    </view>
+    <scroll-view scrollY style="height:100%">
+        <view class="knowledge-rt" wx:for="{{knowledgeList[knowledgeIndex].son}}" wx:key="{{index}}">
+            <view class="rt-item">
+                <view class="rt-item-title">
+                    <view class="heng one"></view>
+                    <view class="tit">{{item.name}}</view>
+                    <view class="heng two"></view>
+                </view>
+                <view class="rt-item-flex" wx:if="{{item.son}}">
+                    <view class="flex-warp" wx:for="{{item.son}}" wx:for-index="idx" wx:for-item="oItem" wx:key="{{idx}}">
+                        <view bindtap="rtChoose" class="flex" data-chapterId="{{item.id}}" data-oItem="{{oItem}}">{{oItem.name}}</view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </scroll-view>
+</view>

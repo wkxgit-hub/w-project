@@ -1,0 +1,15 @@
+<import src="../../wxParse/wxParse.wxml"></import>
+<view class="container" style="padding-top: {{statusBarHeight+titleBarHeight}}px;">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+            {{oItem.title}}
+        </view>
+    </view>
+</view>
+<view class="nodes">
+    <template is="wxParse" data="{{wxParseData:article.nodes}}"></template>
+</view>

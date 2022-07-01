@@ -1,0 +1,22 @@
+<view class="container" style="padding-top:{{statusBarHeight+titleBarHeight}}px">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+            登录
+        </view>
+    </view>
+</view>
+<view class="login_wrap">
+    <view class="img">
+        <image src="../../images/login-bg.png"></image>
+    </view>
+    <view class="tit1">你还没有登录哦</view>
+    <view class="tit2">登录立即开启新世界</view>
+    <view class="login">
+        <button bindtap="getUserInfo" openType="getUserInfo" wx:if="{{canIUse}}">登录</button>
+        <view style="font-size:16px;" wx:else>请升级微信版本</view>
+    </view>
+</view>

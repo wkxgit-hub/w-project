@@ -1,0 +1,49 @@
+<view class="container" style="padding-top: {{statusBarHeight+titleBarHeight}}px;">
+    <view class="header">
+        <view class="status-bar" style="height:{{statusBarHeight}}px"></view>
+        <view class="title-bar" style="height:{{titleBarHeight}}px;line-height: {{titleBarHeight}}px;">
+            <view bindtap="goBack" class="back" style="height:{{titleBarHeight}}px;">
+                <image src="../../images/back-pic.png"></image>
+            </view>
+			模拟考试
+		</view>
+    </view>
+</view>
+<view class="exam_desc_wrap">
+    <view class="exam_desc">
+        <view class="title">模拟考试</view>
+        <view class="info_wrap">
+            <view class="info">
+                <view class="flex">
+                    <view class="top">{{info.total_score}}分</view>
+                    <view class="bottom">满分(分)</view>
+                </view>
+                <view class="flex">
+                    <view class="top">{{info.pass_score}}分</view>
+                    <view class="bottom">及格(分)</view>
+                </view>
+                <view class="flex">
+                    <view class="top">{{info.paper_time}}分</view>
+                    <view class="bottom">时限(分钟)</view>
+                </view>
+            </view>
+        </view>
+        <view class="notes_wrap">
+            <view class="notes">注：模拟考试下可以修改答案，但注意考试时限，无论答题是否完全，到时自动交卷</view>
+        </view>
+        <view class="btn">
+            <button bindtap="goSimulate" data-item="{{info}}" id="1">全真模拟</button>
+        </view>
+        <view class="btn">
+            <button bindtap="goExam" data-item="{{info}}" id="2">优先考未做题</button>
+        </view>
+        <view class="btn">
+            <button bindtap="goExam" data-item="{{info}}" id="3">智能考试</button>
+        </view>
+    </view>
+    <view class="desc_info">
+        <image src="{{userinfo.headimg}}"></image>
+        <view class="lt">{{userinfo.nickname}}</view>
+        <view class="rt">最佳成绩：{{info.highest==null?'0':info.highest}}分</view>
+    </view>
+</view>
